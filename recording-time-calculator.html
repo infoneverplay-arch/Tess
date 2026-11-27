@@ -1,0 +1,26 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Video Recording Time & Storage Calculator (ProRes, H.264, H.265)</title><meta name="description" content="Calculate how much recording time fits on your card and how much storage your footage needs, for ProRes, H.264 and H.265 at any frame rate."><link rel="canonical" href="https://infoneverplay-arch.github.io/Tess/recording-time-calculator.html"><link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Recording time & storage calculator", "url": "https://infoneverplay-arch.github.io/Tess/recording-time-calculator.html", "applicationCategory": "MultimediaApplication", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script></head><body><header><nav class="nav"><a class="brand" href="index.html">Frame Math</a><a href="recording-time-calculator.html">Storage</a><a href="depth-of-field-calculator.html">Depth of Field</a><a href="aspect-ratio-crop-calculator.html">Aspect Ratio</a><a href="timelapse-calculator.html">Timelapse</a></nav></header>
+<main><h1>Recording time & storage calculator</h1><p class="lead">Pick a codec and frame rate to see minutes per card and total storage, including backups.</p><div class="tool"><div>
+<label>Codec / format</label><select id="codec"></select>
+<label>Frame rate (fps)</label><input id="fps" type="number" value="24" step="0.001">
+<label>Bitrate (Mbps) <span id="note"></span></label><input id="mbps" type="number" value="0">
+<label>Card / drive size (GB)</label><input id="card" type="number" value="256">
+<label>Footage length (minutes)</label><input id="mins" type="number" value="60">
+</div><div class="out">
+<div>Recording time on card</div><div class="big" id="rt">-</div>
+<div class="row"><span>Storage for your footage</span><b id="st">-</b></div>
+<div class="row"><span>Per minute</span><b id="pm">-</b></div>
+<div class="row"><span>Per hour</span><b id="ph">-</b></div>
+<div class="row"><span>With 2 backups (3 copies)</span><b id="bk">-</b></div></div></div><article><h2>How this works</h2><p>Video file size depends on bitrate: megabits per second. Divide by 8 to get megabytes per second, and multiply by your recording time. ProRes bitrates scale with frame rate, so 4K ProRes 422 HQ at 60 fps is about twice the size of 30 fps. Long-GOP codecs like H.264 and H.265 use whatever bitrate your camera is set to, so check your menu and type it in.</p>
+<h2>Plan for three copies</h2><p>Most productions keep footage in three places: a working drive and two backups, one of them off site. The calculator shows that total so you can budget drives before the shoot, not after.</p></article><section class="gear"><h2>Gear that helps</h2><ul><li><a href="https://www.amazon.com/s?k=CFexpress+Type+B+card+512GB" rel="sponsored nofollow" target="_blank">Fast CFexpress Type B cards</a></li><li><a href="https://www.amazon.com/s?k=portable+SSD+2TB" rel="sponsored nofollow" target="_blank">Portable SSDs for on-set backup</a></li><li><a href="https://www.amazon.com/s?k=rugged+external+hard+drive+5TB" rel="sponsored nofollow" target="_blank">Rugged hard drives for archive</a></li></ul></section></main>
+<footer>Free tools for filmmakers. Results are estimates; always check your camera's manual. Some links are affiliate links, which support this site at no cost to you. &copy; 2026 Frame Math</footer>
+<script>
+// Approximate bitrates in Mbps at 29.97 fps (Apple ProRes white paper values for UHD/1080). Scale linearly with fps.
+const C={"ProRes 4444 - UHD 4K":1061,"ProRes 422 HQ - UHD 4K":707,"ProRes 422 - UHD 4K":471,"ProRes 422 LT - UHD 4K":328,"ProRes 422 Proxy - UHD 4K":145,"ProRes 422 HQ - 1080p":176,"ProRes 422 - 1080p":117,"ProRes 422 LT - 1080p":82,"H.265 - 4K (typical 150 Mbps)":-150,"H.264 - 4K (typical 100 Mbps)":-100,"H.264 - 1080p (typical 50 Mbps)":-50,"Custom bitrate":0};
+const s=document.getElementById("codec");for(const k in C){const o=document.createElement("option");o.textContent=k;s.appendChild(o)}
+const $=i=>document.getElementById(i);
+function gb(x){return x>=1000?(x/1000).toFixed(2)+" TB":x.toFixed(1)+" GB"}
+function setRate(){const v=C[s.value],f=+$("fps").value||24;if(v>0)$("mbps").value=Math.round(v*f/29.97);else if(v<0)$("mbps").value=-v;$("note").textContent=v>0?"(scaled to frame rate)":v<0?"(set by camera)":"(enter yours)";calc()}
+function calc(){const m=+$("mbps").value||0,gbm=m*60/8/1000;$("pm").textContent=gb(gbm);$("ph").textContent=gb(gbm*60);const t=gbm?($("card").value/gbm):0;$("rt").textContent=gbm?Math.floor(t/60)+" h "+Math.round(t%60)+" min":"-";const st=gbm*($("mins").value||0);$("st").textContent=gb(st);$("bk").textContent=gb(st*3)}
+s.onchange=setRate;$("fps").oninput=setRate;["mbps","card","mins"].forEach(i=>$(i).oninput=calc);setRate();</script></body></html>

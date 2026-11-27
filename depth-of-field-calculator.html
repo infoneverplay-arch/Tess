@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Depth of Field Calculator for Video & Photo (Full Frame, S35, APS-C, MFT)</title><meta name="description" content="Free depth of field calculator. Enter focal length, f-stop, focus distance and sensor size to get near and far limits and hyperfocal distance."><link rel="canonical" href="https://infoneverplay-arch.github.io/Tess/depth-of-field-calculator.html"><link rel="stylesheet" href="style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Depth of field calculator", "url": "https://infoneverplay-arch.github.io/Tess/depth-of-field-calculator.html", "applicationCategory": "MultimediaApplication", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script></head><body><header><nav class="nav"><a class="brand" href="index.html">Frame Math</a><a href="recording-time-calculator.html">Storage</a><a href="depth-of-field-calculator.html">Depth of Field</a><a href="aspect-ratio-crop-calculator.html">Aspect Ratio</a><a href="timelapse-calculator.html">Timelapse</a></nav></header>
+<main><h1>Depth of field calculator</h1><p class="lead">See exactly how much of your scene will be sharp for any lens, aperture and sensor.</p><div class="tool"><div>
+<label>Sensor</label><select id="sensor"><option value="0.030">Full frame (CoC 0.030 mm)</option><option value="0.025">Super 35 / ~1.3x (CoC 0.025 mm)</option><option value="0.020" selected>APS-C 1.5x (CoC 0.020 mm)</option><option value="0.015">Micro Four Thirds (CoC 0.015 mm)</option><option value="0.011">1-inch (CoC 0.011 mm)</option></select>
+<label>Focal length (mm)</label><input id="f" type="number" value="35">
+<label>Aperture (f-stop)</label><input id="n" type="number" value="2.8" step="0.1">
+<label>Focus distance</label><input id="d" type="number" value="3" step="0.1">
+<label>Units</label><select id="u"><option value="1">meters</option><option value="0.3048">feet</option></select>
+</div><div class="out"><div>Total depth of field</div><div class="big" id="tot">-</div>
+<div class="row"><span>Near limit</span><b id="near">-</b></div><div class="row"><span>Far limit</span><b id="far">-</b></div>
+<div class="row"><span>In front of subject</span><b id="fr">-</b></div><div class="row"><span>Behind subject</span><b id="bh">-</b></div>
+<div class="row"><span>Hyperfocal distance</span><b id="hf">-</b></div></div></div><article><h2>Reading the results</h2><p>Depth of field is the zone in front of and behind your focus point that looks acceptably sharp. Wider apertures (lower f-numbers), longer lenses and closer focus make it shallower. The hyperfocal distance is the focus point that keeps everything from half that distance to infinity sharp, which is handy for wides and landscapes.</p>
+<h2>About circle of confusion</h2><p>Each sensor size uses a standard circle of confusion. Projecting on a big screen or pulling focus on a 6K+ image? Pick a smaller value (the next sensor down) to be safe.</p></article><section class="gear"><h2>Gear that helps</h2><ul><li><a href="https://www.amazon.com/s?k=wireless+follow+focus" rel="sponsored nofollow" target="_blank">Wireless follow focus systems</a></li><li><a href="https://www.amazon.com/s?k=cine+prime+lens" rel="sponsored nofollow" target="_blank">Fast prime lenses</a></li><li><a href="https://www.amazon.com/s?k=laser+distance+measure" rel="sponsored nofollow" target="_blank">Laser distance measure for focus pullers</a></li></ul></section></main>
+<footer>Free tools for filmmakers. Results are estimates; always check your camera's manual. Some links are affiliate links, which support this site at no cost to you. &copy; 2026 Frame Math</footer>
+<script>const $=i=>document.getElementById(i);
+function calc(){const c=+$("sensor").value,f=+$("f").value,N=+$("n").value,u=+$("u").value,s=+$("d").value*u*1000;if(!f||!N||!s)return;
+const H=f*f/(N*c)+f,near=s*(H-f)/(H+s-2*f),far=s<H?s*(H-f)/(H-s):Infinity;
+const fm=x=>!isFinite(x)?"Infinity":(x/1000/u).toFixed(2)+($("u").value=="1"?" m":" ft");
+$("near").textContent=fm(near);$("far").textContent=fm(far);$("tot").textContent=isFinite(far)?fm(far-near):"Infinity";
+$("fr").textContent=fm(s-near);$("bh").textContent=isFinite(far)?fm(far-s):"Infinity";$("hf").textContent=fm(H)}
+document.querySelectorAll("input,select").forEach(e=>e.oninput=calc);calc();</script></body></html>
