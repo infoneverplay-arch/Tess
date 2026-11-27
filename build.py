@@ -1,7 +1,7 @@
 # Generates the static site. Agents edit TOOLS and re-run this.
 import json, datetime
 SITE="https://infoneverplay-arch.github.io/Tess"  # GitHub Pages URL; change if a custom domain is added
-ETSY="https://www.etsy.com/shop/YOURSHOP"  # replace after shop opens
+ETSY="https://www.etsy.com/shop/FrameMathStudio"
 AMZ_TAG="YOURTAG-20"  # Amazon Associates tag, after approval
 def amz(q):
     u=f"https://www.amazon.com/s?k={q.replace(' ','+')}"
