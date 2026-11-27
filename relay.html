@@ -1,0 +1,15 @@
+<!doctype html><meta charset="utf-8"><meta name="robots" content="noindex"><title>relay</title>
+<script>
+// Helper for the channel's posting agent: fetches Higgsfield-hosted clips listed in the URL hash
+// and hands them to the parent TikTok Studio page. Only Higgsfield CDN URLs are accepted.
+(async()=>{
+  const items=decodeURIComponent(location.hash.slice(1)).split('|').filter(Boolean);
+  for(const it of items){
+    const [name,url]=it.split('=');
+    if(!/^https:\/\/d2ol7oe51mr4n9\.cloudfront\.net\//.test(url)) continue;
+    const buf=await (await fetch(url)).arrayBuffer();
+    parent.postMessage({kind:'vid',name,buf},'https://www.tiktok.com');
+  }
+  parent.postMessage({kind:'done'},'https://www.tiktok.com');
+})();
+</script>
